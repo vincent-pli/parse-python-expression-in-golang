@@ -25,13 +25,14 @@ init:
 	mkdir -p ${BIN_DIR}
 
 local: init
-	go build -o=${BIN_DIR}/taskrun-watcher ./cmd/client
+	go build -o=${BIN_DIR}/parse-expression ./cmd/client
 
 build-linux: init
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o=${BIN_DIR}/taskrun-watcher ./cmd/client
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o=${BIN_DIR}/parse-expression ./cmd/client
 
 image: build-linux
-	docker build  . -t vincentpli/taskrun-watcher:$(TAG)
+	cp tools/parser.py ${BIN_DIR}/
+	docker build  . -t vincentpli/parse-expression:$(TAG)
 
 update:
 	go mod download
